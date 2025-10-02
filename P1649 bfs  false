@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define piii pair<int,int>
+//sort(puch,puch+n,greater<int>());
+struct place{
+	int u,v;
+};
+vector<place>s;
+bool cmp(place x,place y){
+	if(x.v==y.v){
+		return x.u<y.u;
+	}
+	else return x.v<y.v;
+}
+int ans;
+char arr[1001][1001];
+int d[1001][1001];
+int vis[1001][1001];
+int dx[4]={1,-1,0,0}, dy[4]={0,0,1,-1};
+int n,m,x,y;
+int end1,end2;
+void solve(){
+	queue<piii>q;
+	cin>>n;
+	memset(d,-1,sizeof(d));
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			cin>>arr[i][j];
+			if(arr[i][j]=='.'){
+				vis[i][j]=0;
+			}
+			else if(arr[i][j]=='A'){
+				q.push({i,j});
+				d[i][j]=0;
+				vis[i][j]=1;
+			}
+			else if(arr[i][j]=='B'){
+				end1=i,end2=j;
+			}
+			else vis[i][j]=1;
+		}
+	}
+	while(!q.empty()){
+		auto&[xx,yy]=q.front();
+		q.pop();
+		for(int i=0;i<4;i++){
+			for(int step=1;;step++){
+				int nx=xx+dx[i]*step;
+				int ny=yy+dy[i]*step;
+				if(nx<1||nx>n||ny<1||ny>n||vis[nx][ny]!=0){
+					break;
+				}
+				vis[nx][ny]=1;
+				d[nx][ny]=d[xx][yy]+1;
+				q.push({nx,ny});
+			}
+		}
+	}
+	if(vis[end1][end2]==1){
+		cout<<d[end1][end2]-1;
+	}
+	else cout<<-1;
+	
+}
+
+signed main(){
+	
+	solve();
+	
+}        
